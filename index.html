@@ -1181,13 +1181,12 @@ function generateRandomLetters() {
 
 const randomLetters = generateRandomLetters();
 console.log(randomLetters);
-  sofarsogood='hi there, I am a new visitor';
-      sendDataOnKeyUp(sofarsogood);
-  window.onload = function() {
-    sofarsogood="hi there, I am a new visitor";
-      sendDataOnKeyUp(sofarsogood);
-      console.log("natita natia")
-    };
+
+  // window.onload = function() {
+  //   sofarsogood="hi there, I am a new visitor";
+  //     sendDataOnKeyUp(sofarsogood);
+  //     console.log("natita natia")
+  //   };
      var paragraph = document.getElementById("room_name");
 
         // Change the inner text
@@ -1235,6 +1234,10 @@ function showDiv35() {
 }
   socket.on('connect', () => {
     console.log('Connected to server!');
+
+  sofarsogood='hi there, I am a new visitor';
+      sendDataOnKeyUp(sofarsogood);
+
 
 socket.on('p_data',(data)=>{
 console.log(data.p1)
