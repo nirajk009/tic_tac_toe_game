@@ -10,15 +10,15 @@ const inputInitHeight = chatInput.scrollHeight;
 
   
 
-    document.addEventListener("DOMContentLoaded", async function() {
-      try {
-        await sendDataOnKeyUp("hi there, I am a new visitor");
-        console.log("Data sent successfully!");
-        // Continue loading the page or trigger other actions after sending data
-      } catch (error) {
-        console.error("Error sending data:", error);
-      }
-    });
+    // document.addEventListener("DOMContentLoaded", async function() {
+    //   try {
+    //     await sendDataOnKeyUp("hi there, I am a new visitor");
+    //     console.log("Data sent successfully!");
+    //     // Continue loading the page or trigger other actions after sending data
+    //   } catch (error) {
+    //     console.error("Error sending data:", error);
+    //   }
+    // });
 
 const createChatLi = (message, className) => {
     // Create a chat <li> element with passed message and className
