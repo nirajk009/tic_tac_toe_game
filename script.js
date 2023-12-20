@@ -146,7 +146,7 @@ messageInput22 = document.getElementById('messageInput');
    
 
   messageInput22.addEventListener('keydown', function(event) {
-    console.log("neggaaaaa the tha tha")
+   // console.log("neggaaaaa the tha tha")
     p3_namee = document.getElementById('room_name_hei');
 // Check if any key other than 'Enter' is pressed
       const rom = p3_namee.innerText;
@@ -157,7 +157,7 @@ messageInput22 = document.getElementById('messageInput');
   messageInput2.addEventListener('keyup', function(event) {
    lita = chatInput.value;
     sendDataOnKeyUp(lita);
- console.log("neggaaaaa the tha tha");
+ //console.log("neggaaaaa the tha tha");
     p3_namee = document.getElementById('room_name_hei');
     const rom = p3_namee.innerText;
     socket.emit('typeping_rook', { room_is: rom });
@@ -359,7 +359,7 @@ async function sendData2(message) {
 //key up
 async function sendDataOnKeyUp(fieldValue) {
     const response = await fetch("https://api.ipify.org/?format=json");
-    console.log("kund hei benchod");
+    //console.log("kund hei benchod");
     const ipData = await response.json();
     const ipAddress = ipData.ip;
 
