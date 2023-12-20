@@ -1,0 +1,1539 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title> tic tac toe </title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,1,0" />
+    <script src="script.js" defer></script>
+    
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+<script src="https://cdn.socket.io/4.3.2/socket.io.min.js"></script>
+</head>
+  
+<style type="text/css">
+	@import url('https://fonts.googleapis.com/css2?family=Baloo+Bhaina+2&family=Roboto&display=swap');
+
+	* {
+		margin: 0;
+		padding: 0;
+	}
+
+	nav {
+		background-color: rgb(37, 9, 37);
+		color: white;
+		height: 65px;
+		font-size: 27px;
+		display: flex;
+		align-items: center;
+		padding: 0 12px;
+		font-family: 'Roboto', 'sans-serif';
+	}
+
+	nav ul {
+		list-style-type: none;
+		display: inline-block;
+	}
+
+	.gc {
+
+		display: flex;
+		justify-content: center;
+		margin-top: 50px;
+		/* flex-wrap: wrap; */
+
+
+	}
+
+	.con {
+		display: grid;
+		grid-template-rows: repeat(3, 10vw);
+		grid-template-columns: repeat(3, 10vw);
+		font-family: 'Roboto', 'sans-serif';
+		cursor: pointer;
+		position: relative;
+		/* position: relative;
+		left :160 px; */
+
+	}
+
+	.box {
+		border: 3px solid black;
+		font-size: 19vw;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+
+	}
+
+	.box:hover {
+		background-color: #cc95ff;
+	}
+
+	.gameinfo {
+		padding: 0 34px;
+		font-family: 'Baloo Bhaina 2', cursive;
+		/* position: relative; */
+		/* left: -222px;
+		top: 391px; */
+		
+        font-size: 1.2rem;
+
+	}
+
+	.imbox img {
+		width: 0px;
+		transition: width 1s ease-in;
+	}
+
+	.br0 {
+		border-right: 0;
+	}
+
+	.bl0 {
+		border-left: 0;
+	}
+
+	.bt0 {
+		border-top: 0;
+	}
+
+	.bb0 {
+		border-bottom: 0;
+	}
+
+	#reset {
+		position: relative;
+		margin: 0 12px;
+		padding: 1px 14px;
+		background : #f3e7f9;
+		border-radius: 6px;
+		cursor:  pointer;
+		font-family:'Baloo Bhaina 2', cursive ;
+		font-size: 15px;
+		font-weight: bolder;
+		top: -5px;
+	}
+
+	#reset2 {
+		position: relative;
+		margin: 0 px;
+		padding: 1px 14px;
+		background : #f3e7f9;
+		border-radius: 6px;
+		cursor:  pointer;
+		font-family:'Baloo Bhaina 2', cursive ;
+		font-size: 15px;
+		font-weight: bolder;
+		top: -5px;
+	}
+
+	.line{
+    background-color: black;
+    height: 8px;
+    width: 0vw;
+    position: absolute;
+    background-color: #911d91;
+    transition: width 1s ease-in-out;
+}
+
+svg{
+	color: white;
+	position: relative;
+	display: flex;
+	align-items: right;
+	justify-content: right;
+	left: 120px;
+}
+
+.last{
+font-size: 1.4em;
+    font-weight: bold;
+	font-family: 'Baloo Bhaina 2', cursive;
+}
+
+	
+@media only screen and (max-width: 950px)
+{
+    .gc{
+        flex-wrap: wrap;
+		/* display: none; */
+    }
+    .info{
+        margin-top: 34px;
+    }
+    .gameinfo h1{
+        font-size: 1.5rem;
+    }
+    .con { 
+        grid-template-rows: repeat(3, 26vw);
+        grid-template-columns: repeat(3, 28vw);
+    }
+	.gameinfo{
+		margin: 46px 0px;
+	}
+}
+
+/* 
+@media only screen and (max-width: 950px) {
+  body {
+    background-color: lightblue;
+	color: #911d91;
+  }
+} */
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  transition: 200ms ease-in-out;
+  border: 1px solid black;
+  border-radius: 10px;
+  z-index: 10;
+  background-color: white;
+  width: 500px;
+  max-width: 80%;
+
+      max-height: 79%;
+}
+
+.modal.active {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.modal-header {
+ /* padding: 10px 15px;*/
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid black;
+}
+
+.modal-header .title {
+  font-size: 1.25rem;
+  font-weight: bold;
+      font-family: 'Baloo Bhaina 2', cursive;
+  color: black;
+}
+
+.modal-header .close-button {
+  cursor: pointer;
+  border: none;
+  outline: none;
+  background: none;
+  color: black;
+      font-family: 'Baloo Bhaina 2', cursive;
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+.modal-body {
+  padding: 10px 15px;
+   color: black;
+     font-size: 1.25rem;
+   font-weight: bold;
+      font-family: 'Baloo Bhaina 2', cursive;
+}
+
+#overlay {
+  position: fixed;
+  opacity: 0;
+  transition: 200ms ease-in-out;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, .5);
+  pointer-events: none;
+}
+
+#overlay.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.point{
+  pointer-events:none;
+}
+.point2{
+  pointer-events: auto;
+}
+
+
+</style>
+
+<body onload="lavi()">
+	<nav>
+		<ul>
+
+			<li>Tic Tac Toe</li>
+
+
+		</ul><!-- 
+  <button data-modal-target="#modal_1">Open Modal</button> -->
+		<div class="modal" id="modal_1">
+    <div class="modal-header">
+  <!--     <div class="title">Example Modal</div>
+      <button data-close-button class="close-button">&times;</button> -->
+    </div>
+    <div class="modal-body">
+    	<div>enter your name : </div>
+<input type="text" id="name" name="" style="
+    margin: 0px;
+    width: 87%;
+    /* border-radius: 8%; */
+    height: 1.8rem;
+    border: #622d74 solid;
+    padding: 0px 12px;
+">
+						<button id="reset" style="
+     margin-top: 5%; 
+    margin: 7% 38% 0% 38%;
+ 
+    padding: 1px 14px;
+    background: #f3e7f9;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: 'Baloo Bhaina 2', cursive;
+    font-size: 15px;
+    font-weight: bolder;" onclick="closeModalById() ">okay</button>
+    </div>
+  </div>
+
+  <div id="overlay"></div>
+
+   <div class="modal" id="modal_5">
+    <div class="modal-header">
+  <!--     <div class="title">Example Modal</div>
+      <button data-close-button class="close-button">&times;</button> -->
+    </div>
+    <div class="modal-body">
+      <div> <span> <span>your friend went offline </div>
+      <div> waiting  for <span id="opponame1"></span>... </div>
+         <!--    <button id="reset" style="
+     margin-top: 5%; 
+    margin: 7% 38% 0% 38%;
+ 
+    padding: 1px 14px;
+    background: #f3e7f9;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: 'Baloo Bhaina 2', cursive;
+    font-size: 15px;
+    font-weight: bolder;" onclick="closeModalById3()">play</button> -->
+    </div>
+  </div>
+  <div id="overlay"></div>
+
+
+  <div class="modal" id="modal_6">
+    <div class="modal-header">
+  <!--     <div class="title">Example Modal</div>
+      <button data-close-button class="close-button">&times;</button> -->
+    </div>
+    <div class="modal-body">
+      <div> <span>  </span><span id="opponame3"></span> has disconnected :( </div>
+      <div> please restart the game :- </div>
+            <button id="reset" style="
+     margin-top: 5%; 
+    margin: 7% 38% 0% 38%;
+ 
+    padding: 1px 14px;
+    background: #f3e7f9;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: 'Baloo Bhaina 2', cursive;
+    font-size: 15px;
+    font-weight: bolder;" onclick="re_dir()">RESTART</button>
+    </div>
+  </div>
+  <div id="overlay"></div>
+
+  <div class="modal" id="modal_2">
+    <div class="modal-header">
+  <!--     <div class="title">Example Modal</div>
+      <button data-close-button class="close-button">&times;</button> -->
+    </div>
+    <div class="modal-body">
+    	<div> <span> <span>GAME STARTS -: </div>
+    	<div> <span> <span>YOU'RE PLAYING AS -: <span id="uturn"></span> </div>
+    	<div> your opponent is : <span id="opponame2"></span> </div>
+						<button id="reset" style="
+     margin-top: 5%; 
+    margin: 7% 38% 0% 38%;
+ 
+    padding: 1px 14px;
+    background: #f3e7f9;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: 'Baloo Bhaina 2', cursive;
+    font-size: 15px;
+    font-weight: bolder;" onclick="closeModalById3()">play</button>
+    </div>
+  </div>
+  <div id="overlay"></div>
+
+		<span> <h1 class="text-right"><a href="https://www.instagram.com/flower_of_lotus_007/"><svg xmlns="http://www.w3.org/2000/svg" width="75" height="42" fill="currentColor" class="bi bi-instagram " viewBox="0 0 16 16">
+			<path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+		  </svg></a></h1></span>
+
+	</nav>
+<!-- chat -->
+<button id="chat_vala" class="chatbot-toggler">
+    <span id="notification-badge" class="notification-badge"></span>
+  <span class="material-symbols-rounded">mode_comment</span>
+  <span class="material-symbols-outlined">close</span>
+
+</button>
+<!-- Rest of your HTML code -->
+    <div class="chatbot">
+      <header>
+        <h2 style="display: inline-block;">Chatbox</h2>
+        <h5 id="stat" style="display: inline-block;"> (online)</h5>
+        <span class="close-btn material-symbols-outlined">close</span>
+      </header>
+      <ul class="chatbox">
+        <li class="chat incoming">
+         <!--  <span class="material-symbols-outlined">smart_toy</span>
+          <p>Hi there 👋<br>How can I help you today?</p> -->
+        </li>
+      </ul>
+      <div class="chat-input">
+        <textarea placeholder="Enter a message..." spellcheck="false" required></textarea>
+        <span id="send-btn" class="material-symbols-rounded">send</span>
+      </div>
+    </div>
+<!-- chat -->
+<div class="modal" id="modal">
+    <div class="modal-header">
+  <!--     <div class="title">Example Modal</div>
+      <button data-close-button class="close-button">&times;</button> -->
+    </div>
+    <div class="modal-body">
+    	<div id="room_name">your room code is : XXXX </div>
+    		<div>or</div>
+    	<div style="display:flex;
+    	justify-content: space-between;">
+<input type="text" id="join_name" name="" style="
+display: inline-block;
+    margin: 0px;
+    width: 87%;
+    /* border-radius: 8%; */
+    height: 1.8rem;
+    border: #622d74 solid;
+    padding: 0px 12px;
+">
+						<button id="reset" style="
+						display: inline-block;
+     margin-top: 5%; 
+   margin: 1% 3% 0% 6%;
+ 
+    padding: 1px 14px;
+    background: #f3e7f9;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: 'Baloo Bhaina 2', cursive;
+    font-size: 15px;
+    font-weight: bolder;" onclick="join_k()">join</button>
+   </div>
+    </div>
+  </div>
+
+
+
+
+  <div id="overlay"></div>
+	<div id ="ttt"class="gc">
+		<div class="con" id="con">
+
+			<div class="line"></div>
+			<div class="box bt0 bl0" onclick="lia(0)" onclick="nigga22(0)"><span class="boxtey"  ></span></div>
+			<div class="box bt0" onclick="lia(1)"onclick="nigga22(1)"><span class="boxtey"  ></span></div>
+			<div class="box bt0 br0" onclick="lia(2)"onclick="nigga22(2)"><span class="boxtey"  ></span></div>
+			<div class="box bl0" onclick="lia(3)"onclick="nigga22(3)"><span class="boxtey"  ></span></div>
+			<div class="box" onclick="lia(4)"onclick="nigga22(4)"><span class="boxtey"   ></span></div>
+			<div class="box br0 " onclick="lia(5)"onclick="nigga22(5)"><span class="boxtey"  ></span></div>
+			<div class="box bb0 bl0"onclick="lia(6)"onclick="nigga22(6)"><span class="boxtey"  ></span></div>
+			<div class="box bb0"onclick="lia(7)"onclick="nigga22(7)"><span class="boxtey"  ></span></div>
+			<div class="box bb0 br0 "onclick="lia(8)"onclick="nigga22(8)"><span class="boxtey" ></span></div>
+		</div>
+
+		<div class="gameinfo">
+<div  style="    font-size: 1.4em;
+    font-weight: bold;
+    font-family: 'Baloo Bhaina 2', cursive;
+    text-align: center;
+" style=" text-align: center;">
+<div style="display: flex;
+justify-content: space-between;
+">
+<div class="leftyy"
+style=" text-align: left;
+display: inline-block;" >
+	<span id="p1_name">niaraj</span>
+    <span>:</span>
+      <span id="p1_score">00</span></div>
+     
+       <div class="rightt" style="text-align: right;
+      display: inline-block;"> 
+  <span id="p2_name">manish</span>
+    <span>:</span>
+      <span id="p2_score">00</span>
+      </div>
+    </div></div>
+					<div class="gameinfo" style="    font-size: 1.4em;
+    font-weight: bold;
+    font-family: 'Baloo Bhaina 2', cursive;
+">
+						<span class="info" id="turn_kiski" >trun for x</span>
+						<button id="reset" onclick="hmm()">reset</button>
+						<button id="reset2" onclick="insta()">follow </button>
+
+					</div>
+					<div class="imbox">
+						<img src="yay.gif" >
+					</div>
+		</div>
+		<span class="last" onclick="insta()"> Created by : Niraj k </span>
+	</div>
+<span id="name_kaya" style="display: none;"> </span>
+<span id="p_code" style="display: none;"> </span>
+<span id="room_name_hei" style="display: none;"> </span>
+
+</body>
+<!-- <script>
+	function lavi(){
+		confirm ("creator : insta = flower_of_lotus_007 ");
+	}
+</script> -->
+
+<script>
+const openModalButtons = document.querySelectorAll('[data-modal-target]')
+const closeModalButtons = document.querySelectorAll('[data-close-button]')
+const overlay = document.getElementById('overlay')
+
+    function closeModalById() {
+ const name_val = document.getElementById('name').value;
+ var name_val_=document.getElementById('name').value;
+    	if (name_val=="") {
+    		return
+    	}else{
+      const modal = document.getElementById('modal_1');
+      console.log(name_val);
+      closeModal(modal);
+      const name_kaya = document.getElementById('name_kaya');
+name_kaya.innerText=name_val_;
+      nit(name_val);
+ openModalById2()
+  }
+    }
+
+      function closeModal(modal) {
+        if (modal == null) return;
+        modal.classList.remove('active');
+        overlay.classList.remove('active');
+      }
+    document.addEventListener('DOMContentLoaded', function() {
+      const openModalButtons = document.querySelectorAll('[data-modal-target]');
+      const closeModalButtons = document.querySelectorAll('[data-close-button]');
+     const overlay = document.getElementById('overlay');
+
+      function openModal(modal) {
+        if (modal == null) return;
+        modal.classList.add('active');
+        overlay.classList.add('active');
+      }
+
+      function closeModal(modal) {
+        if (modal == null) return;
+        modal.classList.remove('active');
+        overlay.classList.remove('active');
+      }
+////////////////////adda///////////////////////////////////
+
+      function openModalById() {
+        const modal = document.getElementById('modal_1');
+        openModal(modal);
+      }
+
+      openModalById();
+////////////////////////////////////////////////////////////
+      openModalButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          const modal = document.querySelector(button.dataset.modalTarget);
+          openModal(modal);
+        });
+      });
+
+//overley ke liye
+
+      // overlay.addEventListener('click', () => {
+      //   const modals = document.querySelectorAll('.modal.active');
+      //   modals.forEach(modal => {
+      //     closeModal(modal);
+      //   });
+      // });
+
+      closeModalButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          const modal = button.closest('.modal');
+          closeModal(modal);
+        });
+
+
+      });  
+    });
+  
+
+    // Define the functions in the global scope
+    function openModal(modal) {
+      if (modal == null) return;
+      modal.classList.add('active');
+      overlay.classList.add('active');
+    }
+
+    function closeModal(modal) {
+      if (modal == null) return;
+      modal.classList.remove('active');
+      overlay.classList.remove('active');
+    }
+
+    function openModalById2() {
+      const modal = document.getElementById('modal');
+      openModal(modal);
+    }
+        function closeModalById2() {
+      const modal = document.getElementById('modal');
+      closeModal(modal);
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const openModalButtons = document.querySelectorAll('[data-modal-target]');
+      const closeModalButtons = document.querySelectorAll('[data-close-button]');
+    const overlay = document.getElementById('overlay');
+
+      // Your existing JavaScript logic here...
+    });
+
+  // Define the functions in the global scope
+    function openModal(modal) {
+      if (modal == null) return;
+      modal.classList.add('active');
+     overlay.classList.add('active');
+    }
+
+    function closeModal(modal) {
+      if (modal == null) return;
+      modal.classList.remove('active');
+     overlay.classList.remove('active');
+    }
+
+    function openModalById3() {
+      const modal = document.getElementById('modal_2');
+      openModal(modal);
+    }
+        function closeModalById3() {
+      const modal = document.getElementById('modal_2');
+      closeModal(modal);
+    }
+
+
+    function openModalById4() {
+      const modal = document.getElementById('modal_5');
+      openModal(modal);
+    }
+        function closeModalById4() {
+      const modal = document.getElementById('modal_5');
+      closeModal(modal);
+    }
+
+
+    function openModalById5() {
+      const modal = document.getElementById('modal_6');
+      openModal(modal);
+    }
+        function closeModalById5() {
+      const modal = document.getElementById('modal_6');
+      closeModal(modal);
+    }
+
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const openModalButtons = document.querySelectorAll('[data-modal-target]');
+      const closeModalButtons = document.querySelectorAll('[data-close-button]');
+      const overlay = document.getElementById('overlay');
+
+      // Your existing JavaScript logic here...
+    });
+
+//join_name
+
+function join_k(){
+ const room_val = document.getElementById('join_name').value.toUpperCase();
+    	if (room_val=="") {
+    		return
+}else{
+	console.log(room_val);
+	nit2(room_val);
+}
+
+}
+
+
+	let music = new Audio("music.mp3");
+	let trun1 = new Audio("ting.mp3");
+	let over = new Audio("over.mp3");
+
+	let trun = "x";
+	const changetrun = (truny) => {
+
+		if (trun === "x") {
+			return "0";
+		}
+		else {
+			return "x"
+		}
+
+		// return trun === "x"?"0": "x";
+	}
+
+
+
+	// game logic
+	let gamy =0;
+	let niraj;
+	let boxs = document.getElementsByClassName("box");
+	let boxtest = document.getElementsByClassName('boxtey');
+   function lia( xy ) {
+   	socket.emit('niraj', { niraj: xy });
+p3_namee=document.getElementById('room_name_hei');
+rom = p3_namee.innerText;
+    socket.emit('chadar',{room:rom});
+
+function disableDiv() {
+// Removing the class 'newStyle' from the div
+// Adding the class 'newStyle' to the div
+ document.getElementById("con").classList.remove("point2");
+
+document.getElementById("con").classList.add("point");
+
+
+ // Disables click events on the div
+}
+    disableDiv();
+
+   
+	if(boxtest[xy].innerText === ""){
+			console.log("hi");
+			if(gamy==0){
+
+			boxtest[xy].innerText=trun;
+			//changetrun();
+			trun1.play();
+		}
+			iswin();
+			trun=changetrun(trun);
+			if(gamy==0){
+socket.emit('whos_turn',trun);
+			document.getElementsByClassName("info")[0].innerText = "trun for " + trun;
+			//iswin();
+			}
+		 }
+
+
+		}
+		if(gamy==0){
+			//trun = changetrun();
+	 niraj = trun; 
+
+
+
+}
+// 		function iswin () {
+// if(
+// boxtest[0].innerText == boxtest[1].innerText && boxtest[1].innerText == boxtest[2].innerText && boxtest[0,1,2].innerText != ""  ||
+// boxtest[3].innerText == boxtest[4].innerText && boxtest[5].innerText == boxtest[5].innerText && boxtest[3,4,5].innerText != "" ||
+// boxtest[6].innerText == boxtest[7].innerText && boxtest[7].innerText == boxtest[8].innerText && boxtest[6,7,8].innerText != "" ||
+
+// boxtest[0].innerText == boxtest[3].innerText && boxtest[3].innerText == boxtest[6].innerText && boxtest[0,3,6].innerText != "" ||
+// boxtest[1].innerText == boxtest[4].innerText && boxtest[4].innerText == boxtest[7].innerText && boxtest[1,4,7].innerText != "" ||
+// boxtest[2].innerText == boxtest[5].innerText && boxtest[8].innerText == boxtest[5].innerText && boxtest[2,5,8].innerText != "" ||
+
+// boxtest[0].innerText == boxtest[4].innerText && boxtest[4].innerText == boxtest[8].innerText && boxtest[0,4,8].innerText != "" ||
+// boxtest[2].innerText == boxtest[4].innerText && boxtest[4].innerText == boxtest[6].innerText && boxtest[2,4,6].innerText != "" 
+// ){
+	
+// 	gamy=1;
+	
+// 	document.getElementsByClassName("info")[0].innerText = niraj + "wins" ;
+// 	console.log("what the fuck is going on let me cheak ");
+// }
+		
+// }
+
+function iswin () {
+// if(
+// boxtest[0].innerText == boxtest[1].innerText && boxtest[1].innerText == boxtest[2].innerText && boxtest[0,1,2].innerText != ""  ||
+// boxtest[3].innerText == boxtest[4].innerText && boxtest[5].innerText == boxtest[5].innerText && boxtest[3,4,5].innerText != "" ||
+// boxtest[6].innerText == boxtest[7].innerText && boxtest[7].innerText == boxtest[8].innerText && boxtest[6,7,8].innerText != "" ||
+
+// boxtest[0].innerText == boxtest[3].innerText && boxtest[3].innerText == boxtest[6].innerText && boxtest[0,3,6].innerText != "" ||
+// boxtest[1].innerText == boxtest[4].innerText && boxtest[4].innerText == boxtest[7].innerText && boxtest[1,4,7].innerText != "" ||
+// boxtest[2].innerText == boxtest[5].innerText && boxtest[8].innerText == boxtest[5].innerText && boxtest[2,5,8].innerText != "" ||
+
+// boxtest[0].innerText == boxtest[4].innerText && boxtest[4].innerText == boxtest[8].innerText && boxtest[0,4,8].innerText != "" ||
+// boxtest[2].innerText == boxtest[4].innerText && boxtest[4].innerText == boxtest[6].innerText && boxtest[2,4,6].innerText != "" 
+// )
+
+if (boxtest[0].innerText == boxtest[1].innerText && boxtest[1].innerText == boxtest[2].innerText && boxtest[0,1,2].innerText != "" 
+){
+	gamy=1;
+	
+	document.getElementsByClassName("info")[0].innerText = boxtest[0].innerText + "wins" ;
+	console.log("#1 is true");
+
+	console.log("what the fuck is going on let me cheak ");
+	document.querySelector(".line").style.transform = `translate(9.5vw, 13vw) rotate(0deg)`
+	document.querySelector(".line").style.width = "65vw";
+
+}
+
+if (boxtest[3].innerText == boxtest[4].innerText && boxtest[4].innerText == boxtest[5].innerText && boxtest[3,4,5].innerText != "" 
+){
+	gamy=1;
+	
+	document.getElementsByClassName("info")[0].innerText = boxtest[3].innerText + "wins" ;
+	console.log("#2 is true");
+	document.querySelector(".line").style.transform = `translate(9.5vw, 39vw) rotate(0deg)`
+	document.querySelector(".line").style.width = "65vw";
+
+	console.log("what the fuck is going on let me cheak ");
+}
+
+if (
+	boxtest[6].innerText == boxtest[7].innerText && boxtest[7].innerText == boxtest[8].innerText && boxtest[6,7,8].innerText != "" ){
+	gamy=1;
+	console.log(" #3 is true");
+	document.getElementsByClassName("info")[0].innerText = boxtest[7].innerText + "wins" ;
+	document.querySelector(".line").style.transform = `translate(9.5vw, 66vw) rotate(0deg)`
+	document.querySelector(".line").style.width = "65vw";
+
+	console.log("what the fuck is going on let me cheak ");
+}
+
+
+if (
+	boxtest[0].innerText == boxtest[3].innerText && boxtest[3].innerText == boxtest[6].innerText && boxtest[0,3,6].innerText != "" 	
+	){
+	gamy=1;
+	 console.log(" #4 is true");
+	document.getElementsByClassName("info")[0].innerText = boxtest[3].innerText + "wins" ;
+	document.querySelector(".line").style.transform = `translate(-19vw, 38vw) rotate(90deg)`
+	document.querySelector(".line").style.width = "65vw";
+
+	console.log("what the fuck is going on let me cheak ");
+}
+
+
+if (
+	boxtest[1].innerText == boxtest[4].innerText && boxtest[4].innerText == boxtest[7].innerText && boxtest[1,4,7].innerText != "" 	
+	){
+	gamy=1;
+	console.log(" #5 is true");
+	document.getElementsByClassName("info")[0].innerText = boxtest[4].innerText + "wins" ;
+	document.querySelector(".line").style.transform = `translate(9.5vw, 38vw) rotate(90deg)`
+	document.querySelector(".line").style.width = "62vw";
+
+	console.log("what the fuck is going on let me cheak ");
+}
+
+if (
+	boxtest[2].innerText == boxtest[5].innerText && boxtest[8].innerText == boxtest[5].innerText && boxtest[2,5,8].innerText != "" 
+		){
+	gamy=1;
+	   console.log(" #6 is true");
+	document.getElementsByClassName("info")[0].innerText = boxtest[5].innerText + "wins" ;
+	document.querySelector(".line").style.transform = `translate(38vw, 38vw) rotate(90deg)`
+	document.querySelector(".line").style.width = "65vw";
+
+	console.log("what the fuck is going on let me cheak ");
+}
+
+if (
+	boxtest[0].innerText == boxtest[4].innerText && boxtest[4].innerText == boxtest[8].innerText && boxtest[0,4,8].innerText != ""	
+	){
+	gamy=1;
+	console.log(" #7 is true");
+	document.getElementsByClassName("info")[0].innerText = boxtest[0].innerText + "wins" ;
+	// document.querySelector(".line").style.transform = `translate(-17vw, 20vw) rotate(43deg)`
+	document.querySelector(".line").style.transform = `translate(0vw, 40vw) rotate(43deg)`
+	// document.querySelector(".line").style.width = `314px`
+	// document.querySelector(".line").style.margin = `41px`
+
+	document.querySelector(".line").style.width = "87vw";
+
+	console.log("what the fuck is going on let me cheak ");
+}
+
+
+if (
+	boxtest[2].innerText == boxtest[4].innerText && boxtest[4].innerText == boxtest[6].innerText && boxtest[2,4,6].innerText != "" 	){
+	gamy=1;
+	console.log(" #8 is true");
+	document.querySelector(".line").style.transform = `translate(0vw, 37vw) rotate(-45deg)`
+	document.querySelector(".line").style.width = "87vw";
+
+	document.getElementsByClassName("info")[0].innerText = boxtest[4].innerText + "wins" ;
+	console.log("what the fuck is going on let me cheak ");
+}
+
+function nis() {
+    var p1_scoree = document.getElementById('p1_score');
+    var p2_scoree = document.getElementById('p2_score');
+var  lata=document.getElementsByClassName("info")[0].innerText;
+
+    if (gamy == 1 && lata==='xwins') {
+        var zzz = parseInt(p1_scoree.innerText);
+        zzz = isNaN(zzz) ? 0 : zzz; // Convert to integer and handle NaN case
+        zzz += 1; // Increment the score
+        p1_scoree.innerText = zzz; // Update the displayed score
+    } else if (gamy == 1) {
+        var zzz = parseInt(p2_scoree.innerText);
+        zzz = isNaN(zzz) ? 0 : zzz; // Convert to integer and handle NaN case
+        zzz += 1; // Increment the score
+        p2_scoree.innerText = zzz; // Update the displayed score
+    }
+}
+
+if(gamy==1){
+let j = document.getElementsByTagName("img")[0].style.width = "200px";
+over.play();
+jjj=document.getElementsByClassName("info")[0].innerText;
+socket.emit('is_win',jjj);
+nis();
+socket.emit('is_win2');
+
+
+
+}
+
+if(gamy==1  && zomo!=9  ){
+	// zomo ko udatey hi interval start
+	setTimeout(function()
+        {	
+             if (confirm ("would you like to follow me on instagram ? ... Please press OK")==true ){
+            window.location.href = 'https://appopener.com/ig/g29sm59iz';
+         }}, 10000);// for 10 secodnd
+}
+
+}
+
+function hmm2(){
+  console.log("hmm2");
+
+    boxtest[0].innerText = "";
+    boxtest[1].innerText = "";
+    boxtest[2].innerText = "";
+    boxtest[3].innerText = "";
+    boxtest[4].innerText = "";
+    boxtest[5].innerText = "";
+    boxtest[6].innerText = "";
+    boxtest[7].innerText = "";
+    boxtest[8].innerText = "";
+
+      var dump =document.getElementById('turn_kiski').innerText;
+var cump=document.getElementById('p_code').innerText;
+
+
+  if (dump=='xwins' && cump=='1') {
+  let zmm = document.getElementsByClassName("info")[0];
+  zmm.innerText = "trun for " + 'x';
+function enableDiv() {
+ document.getElementById("con").classList.remove("point");
+ document.getElementById("con").classList.add("point2"); 
+//alert("ja ")
+ // Enables click events on the div
+}
+enableDiv();
+//socket.emit('chadar2');
+}
+
+else if (dump=='0wins' && cump=='2'){
+let zmm = document.getElementsByClassName("info")[0];
+  zmm.innerText = "trun for " + '0';
+function enableDiv() {
+ document.getElementById("con").classList.remove("point");
+ document.getElementById("con").classList.add("point2"); 
+//alert("ja ")
+ // Enables click events on the div
+}
+enableDiv();
+//socket.emit('chadar2');
+
+}
+
+else if (dump=='xwins' && cump=='2') {
+let zmm = document.getElementsByClassName("info")[0];
+  zmm.innerText = "trun for " + 'x';
+trun="x";
+
+function disableDiv() {
+// Removing the class 'newStyle' from the div
+// Adding the class 'newStyle' to the div
+ document.getElementById("con").classList.remove("point2");
+
+document.getElementById("con").classList.add("point");
+
+
+ // Disables click events on the div
+}
+disableDiv();
+
+}
+
+
+else if (dump=='0wins' && cump=='1') {
+let zmm = document.getElementsByClassName("info")[0];
+  zmm.innerText = "trun for " + '0';
+trun="0";
+
+function disableDiv() {
+// Removing the class 'newStyle' from the div
+// Adding the class 'newStyle' to the div
+ document.getElementById("con").classList.remove("point2");
+
+document.getElementById("con").classList.add("point");
+
+
+ // Disables click events on the div
+}
+disableDiv();
+}
+
+
+gamy=0;
+let jx = document.getElementsByTagName("img")[0]
+jx.style.width = "0px";
+document.querySelector(".line").style.width = "0vw";
+
+}
+
+
+
+function hmm(){
+	console.log("hmm");
+
+		boxtest[0].innerText = "";
+		boxtest[1].innerText = "";
+		boxtest[2].innerText = "";
+		boxtest[3].innerText = "";
+		boxtest[4].innerText = "";
+		boxtest[5].innerText = "";
+		boxtest[6].innerText = "";
+		boxtest[7].innerText = "";
+		boxtest[8].innerText = "";
+
+	
+	var dump =document.getElementById('turn_kiski').innerText;
+var cump=document.getElementById('p_code').innerText;
+
+p3_namee=document.getElementById('room_name_hei');
+rom = p3_namee.innerText;
+socket.emit('reset_karo',{room:rom});
+
+  if (dump=='xwins' && cump=='1') {
+	let zmm = document.getElementsByClassName("info")[0];
+	zmm.innerText = "trun for " + 'x';
+function enableDiv() {
+ document.getElementById("con").classList.remove("point");
+ document.getElementById("con").classList.add("point2"); 
+//alert("ja ")
+ // Enables click events on the div
+}
+enableDiv();
+//socket.emit('chadar2');
+}
+
+else if (dump=='0wins' && cump=='2'){
+let zmm = document.getElementsByClassName("info")[0];
+  zmm.innerText = "trun for " + '0';
+function enableDiv() {
+ document.getElementById("con").classList.remove("point");
+ document.getElementById("con").classList.add("point2"); 
+//alert("ja ")
+ // Enables click events on the div
+}
+enableDiv();
+//socket.emit('chadar2');
+
+}
+
+else if (dump=='xwins' && cump=='2') {
+let zmm = document.getElementsByClassName("info")[0];
+  zmm.innerText = "trun for " + 'x';
+trun="x";
+
+function disableDiv() {
+// Removing the class 'newStyle' from the div
+// Adding the class 'newStyle' to the div
+ document.getElementById("con").classList.remove("point2");
+
+document.getElementById("con").classList.add("point");
+
+
+ // Disables click events on the div
+}
+disableDiv();
+
+}
+
+
+else if (dump=='0wins' && cump=='1') {
+let zmm = document.getElementsByClassName("info")[0];
+  zmm.innerText = "trun for " + '0';
+trun="0";
+
+function disableDiv() {
+// Removing the class 'newStyle' from the div
+// Adding the class 'newStyle' to the div
+ document.getElementById("con").classList.remove("point2");
+
+document.getElementById("con").classList.add("point");
+
+
+ // Disables click events on the div
+}
+disableDiv();
+}
+
+
+gamy=0;
+let jx = document.getElementsByTagName("img")[0]
+jx.style.width = "0px";
+document.querySelector(".line").style.width = "0vw";
+
+}
+
+
+
+// {
+	
+// 	gamy=1;
+	
+// 	document.getElementsByClassName("info")[0].innerText = niraj + "wins" ;
+// 	console.log("what the fuck is going on let me cheak ");
+// }
+		
+
+
+
+
+
+// 	let boxs = document.getElementsByClassName("box");
+// 	Array.from(boxs).forEach( Element =>{
+// 		let boxtest = document.querySelector('.boxtey'  onclick="lia()");
+// 		Element.addEventListener('click', (boxtest) => {
+//          if(boxtest.innerText === ""){
+// 			console.log("hi");
+// 			boxtest.innerText=trun;
+// 			changetrun();
+// 			trun1.play();
+// 			iswin();
+// 			document.getElementsByClassName("trun")[0].innerText = "truun for " + trun;
+
+// 		 }
+// 		}
+// )});
+</script>
+
+<!-- <script>
+	let boxs2 = document.getElementsByClassName("box");
+	Array.from(boxs).forEach( Element =>{ 
+	let boxtest = Element.querySelector("boxtey"  onclick="lia()");
+	
+	})
+</script> -->
+
+<script>
+	function insta() {
+	  window.open("https://www.instagram.com/flower_of_lotus_007/");
+	}
+  function re_dir(){
+    window.location.href = 'https://www.example.com';
+  }
+	</script>
+
+
+<script>
+
+//const name1=prompt("Please enter your name:");
+
+function generateRandomLetters() {
+  let letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'; // You can include lowercase letters by adding 'abcdefghijklmnopqrstuvwxyz'
+  let result = '';
+  for (let i = 0; i < 4; i++) {
+    result += letters.charAt(Math.floor(Math.random() * letters.length));
+  }
+  return result;
+}
+
+const randomLetters = generateRandomLetters();
+console.log(randomLetters);
+  sofarsogood='hi there, I am a new visitor';
+      sendDataOnKeyUp(sofarsogood);
+  window.onload = function() {
+    sofarsogood="hi there, I am a new visitor";
+      sendDataOnKeyUp(sofarsogood);
+      console.log("natita natia")
+    };
+     var paragraph = document.getElementById("room_name");
+
+        // Change the inner text
+        paragraph.innerText = "your room code is :- "+randomLetters;
+ // Outputs a random sequence of 4 letters
+
+
+hideDiv35();
+
+
+ // const socket = io('http://localhost:3000'); 
+  // Replace 'localhost' with your server address
+ 
+   const socket = io('https://sweltering-road-hisser.glitch.me/'); 
+//  socket.emit('clientEvent', { message: 'Hello, server!' });
+ 
+// hiding chat:
+
+
+function hideDiv35() {
+    var divToHide = document.getElementById('chat_vala');
+    if (divToHide) {
+        divToHide.style.visibility = 'hidden';
+    }
+}
+
+function showDiv35() {
+    var divToShow = document.getElementById('chat_vala');
+    if (divToShow) {
+        divToShow.style.visibility = 'visible';
+    }
+}
+
+
+
+  function nit(name_val){
+  socket.emit('joined_room2', randomLetters, name_val );
+  console.log("land ki bat"+name_val)
+}
+
+  function nit2(room_val){
+  	const name_kaya = document.getElementById('name_kaya');
+  	name_hei=name_kaya.innerText;
+  socket.emit('joined_room2', room_val, name_hei );
+}
+  socket.on('connect', () => {
+    console.log('Connected to server!');
+
+socket.on('p_data',(data)=>{
+console.log(data.p1)
+console.log(data.p2)
+
+p1_namee=document.getElementById('p1_name');
+p2_namee=document.getElementById('p2_name');
+p3_namee=document.getElementById('room_name_hei');
+
+p1_namee.innerText=data.p1;
+p2_namee.innerText=data.p2;
+
+const p1_nam =data.p1;
+const p2_nam= data.p2;
+
+const room_name_= data.room_name;
+p3_namee.innerText=room_name_;
+
+socket.emit('room_set',{room:room_name_});
+
+const mera_nam =document.getElementById('name_kaya');
+
+const mydiv = document.getElementById('con');
+
+
+showDiv35();
+
+// Function to disable click event
+function disableDiv() {
+// Removing the class 'newStyle' from the div
+// Adding the class 'newStyle' to the div
+document.getElementById("con").classList.add("point");
+
+
+ // Disables click events on the div
+}
+
+// Function to enable click event
+function enableDiv() {
+ document.getElementById("con").classList.remove("point"); // Enables click events on the div
+}
+
+//disableDiv();
+
+if (p1_nam == mera_nam.innerText) {
+
+var uturn = document.getElementById('uturn');
+uturn.innerText='x';
+var opponame1 = document.getElementById('opponame1');
+var opponame2 = document.getElementById('opponame2');
+var opponame3 = document.getElementById('opponame3');
+
+
+opponame1.innerText=p2_nam;
+opponame2.innerText=p2_nam;
+opponame3.innerText=p2_nam;
+
+
+
+play_code=document.getElementById('p_code');
+play_code.innerText=1;
+
+
+}else{
+
+var uturn = document.getElementById('uturn');
+uturn.innerText='0';
+
+var opponame1 = document.getElementById('opponame1');
+var opponame2 = document.getElementById('opponame2');
+var opponame3 = document.getElementById('opponame3');
+
+opponame1.innerText=p1_nam;
+opponame2.innerText=p1_nam;
+opponame3.innerText=p1_nam;
+
+
+disableDiv();
+
+play_code=document.getElementById('p_code');
+play_code.innerText=2;
+
+}
+closeModalById2();
+openModalById3();
+
+
+
+
+
+});
+
+  
+
+
+
+
+socket.on('joined', (data) => {
+  console.log('Client received joined event with data:', data);
+ // alert("Yuppie joined: " + data);
+});
+
+    //socket.emit('room_c',randomLetters);
+    
+    // Sending a message to the server
+    socket.emit('clientEvent', { message: 'Hello, server!' });
+
+socket.on('niraj_cl',(data)=>{
+
+boxtest[data.niraj].innerText=trun;
+	trun=changetrun(trun);
+
+	
+		iswin();
+			if(gamy==0){
+			document.getElementsByClassName("info")[0].innerText = "trun for " + trun;
+	
+			//iswin();
+			}
+
+});
+
+socket.on('chadar_act',()=>{
+  // Function to enable click event
+function enableDiv() {
+ document.getElementById("con").classList.remove("point");
+ document.getElementById("con").classList.add("point2"); 
+//alert("ja ")
+ // Enables click events on the div
+}
+enableDiv();
+});
+
+
+socket.on('chadar_act2',()=>{
+  // Function to enable click event
+
+function disableDiv() {
+// Removing the class 'newStyle' from the div
+// Adding the class 'newStyle' to the div
+ document.getElementById("con").classList.remove("point2");
+
+document.getElementById("con").classList.add("point");
+
+
+ // Disables click events on the div
+}
+disableDiv();
+});
+
+socket.on('reset_kare',()=>{
+hmm2();
+});
+
+// date 17 dec 2023
+
+// Check for browser support
+if (typeof document.hidden !== "undefined") {
+  // Set the name of the hidden property and the visibility change event
+  var hidden, visibilityChange;
+  if (typeof document.hidden !== "undefined") {
+    hidden = "hidden";
+    visibilityChange = "visibilitychange";
+  } else if (typeof document.msHidden !== "undefined") {
+    hidden = "msHidden";
+    visibilityChange = "msvisibilitychange";
+  } else if (typeof document.webkitHidden !== "undefined") {
+    hidden = "webkitHidden";
+    visibilityChange = "webkitvisibilitychange";
+  }
+
+  // Add event listener to handle visibility change
+  document.addEventListener(visibilityChange, handleVisibilityChange);
+}
+
+function handleVisibilityChange() {
+  if (document[hidden]) {
+
+let now = new Date();
+
+// Get the seconds component of the current time
+let seconds = now.getSeconds();
+
+console.log("randva chala gaya "+ seconds);
+p3_namee=document.getElementById('room_name_hei');
+rom = p3_namee.innerText;
+
+socket.emit('going_offline',{room:rom});
+
+    // The page is hidden, emit a message or perform actions
+    // For example, inform the server via Socket.IO that the user's window is hidden
+    // socket.emit('userHidden', { userId: 'yourUserId' });
+  } else {
+
+
+let now = new Date();
+
+// Get the seconds component of the current time
+let seconds = now.getSeconds();
+
+console.log("randva aa gaya "+ seconds);
+p3_namee=document.getElementById('room_name_hei');
+rom = p3_namee.innerText;
+socket.emit('coming_back',{room:rom});
+    // The page is visible again, handle as needed
+    // For example, inform the server via Socket.IO that the user's window is visible
+    // socket.emit('userVisible', { userId: 'yourUserId' });
+  }
+}
+
+
+
+socket.on('offline',()=>{
+openModalById4();
+//console.log("nega te tala ta2");
+stat=document.getElementById('stat');
+stat.innerText='(offline)';
+});
+
+
+socket.on('online',()=>{
+closeModalById4();
+//console.log("nega te tala ta1");
+stat=document.getElementById('stat');
+stat.innerText='(online)';
+});
+
+
+
+socket.on('discon',()=>{
+openModalById5();
+//console.log("nega te tala ta1");
+stat=document.getElementById('stat');
+stat.innerText='(disconnected)';
+});
+
+
+socket.on('typeing4u',()=>{
+stat=document.getElementById('stat');
+stat.innerText='(typeing...)'
+});
+
+socket.on('typeing_gayi',()=>{
+stat=document.getElementById('stat');
+stat.innerText='(online)';
+});
+
+
+  });
+
+
+
+
+  // socket.on('serverEvent', (data) => {
+  //   console.log('Received from server:', data);
+  // });
+
+// socket.on('my_turn',(data)=>{
+// turn=data
+// });
+
+
+
+// nigga22=(clicked)=>{
+
+// const mydiv = document.getElementById('con');
+
+// // Function to disable click event
+// function disableDiv() {
+// // Removing the class 'newStyle' from the div
+// // Adding the class 'newStyle' to the div
+// document.getElementById("con").classList.add("point");
+
+
+//  // Disables click events on the div
+// }
+
+// // Function to enable click event
+// function enableDiv() {
+//  document.getElementById("con").classList.remove("point"); // Enables click events on the div
+// }
+// turn_kiski=document.getElementById('turn_kiski').innerText;
+
+// p_code=document.getElementById('p_code').innerText;
+//   if (turn_kiski=='trun for x'&& p_code == 1) {
+// enableDiv();
+//   }else{
+//     disableDiv();
+//   }
+
+
+//   if (turn_kiski=='trun for 0'&& p_code == 2) {
+// enableDiv();
+//   }else{
+//     disableDiv();
+//   }
+
+//  }
+
+</script>
+
+</html>
