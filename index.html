@@ -312,17 +312,7 @@ font-size: 1.4em;
     <div class="modal-body">
       <div> <span> <span>your friend went offline </div>
       <div> waiting  for <span id="opponame1"></span>... </div>
-         <!--    <button id="reset" style="
-     margin-top: 5%; 
-    margin: 7% 38% 0% 38%;
- 
-    padding: 1px 14px;
-    background: #f3e7f9;
-    border-radius: 6px;
-    cursor: pointer;
-    font-family: 'Baloo Bhaina 2', cursive;
-    font-size: 15px;
-    font-weight: bolder;" onclick="closeModalById3()">play</button> -->
+  
     </div>
   </div>
   <div id="overlay"></div>
@@ -567,14 +557,7 @@ name_kaya.innerText=name_val_;
         });
       });
 
-//overley ke liye
 
-      // overlay.addEventListener('click', () => {
-      //   const modals = document.querySelectorAll('.modal.active');
-      //   modals.forEach(modal => {
-      //     closeModal(modal);
-      //   });
-      // });
 
       closeModalButtons.forEach(button => {
         button.addEventListener('click', () => {
@@ -751,41 +734,10 @@ socket.emit('whos_turn',trun);
 
 
 }
-// 		function iswin () {
-// if(
-// boxtest[0].innerText == boxtest[1].innerText && boxtest[1].innerText == boxtest[2].innerText && boxtest[0,1,2].innerText != ""  ||
-// boxtest[3].innerText == boxtest[4].innerText && boxtest[5].innerText == boxtest[5].innerText && boxtest[3,4,5].innerText != "" ||
-// boxtest[6].innerText == boxtest[7].innerText && boxtest[7].innerText == boxtest[8].innerText && boxtest[6,7,8].innerText != "" ||
 
-// boxtest[0].innerText == boxtest[3].innerText && boxtest[3].innerText == boxtest[6].innerText && boxtest[0,3,6].innerText != "" ||
-// boxtest[1].innerText == boxtest[4].innerText && boxtest[4].innerText == boxtest[7].innerText && boxtest[1,4,7].innerText != "" ||
-// boxtest[2].innerText == boxtest[5].innerText && boxtest[8].innerText == boxtest[5].innerText && boxtest[2,5,8].innerText != "" ||
-
-// boxtest[0].innerText == boxtest[4].innerText && boxtest[4].innerText == boxtest[8].innerText && boxtest[0,4,8].innerText != "" ||
-// boxtest[2].innerText == boxtest[4].innerText && boxtest[4].innerText == boxtest[6].innerText && boxtest[2,4,6].innerText != "" 
-// ){
-	
-// 	gamy=1;
-	
-// 	document.getElementsByClassName("info")[0].innerText = niraj + "wins" ;
-// 	console.log("what the fuck is going on let me cheak ");
-// }
-		
-// }
 
 function iswin () {
-// if(
-// boxtest[0].innerText == boxtest[1].innerText && boxtest[1].innerText == boxtest[2].innerText && boxtest[0,1,2].innerText != ""  ||
-// boxtest[3].innerText == boxtest[4].innerText && boxtest[5].innerText == boxtest[5].innerText && boxtest[3,4,5].innerText != "" ||
-// boxtest[6].innerText == boxtest[7].innerText && boxtest[7].innerText == boxtest[8].innerText && boxtest[6,7,8].innerText != "" ||
 
-// boxtest[0].innerText == boxtest[3].innerText && boxtest[3].innerText == boxtest[6].innerText && boxtest[0,3,6].innerText != "" ||
-// boxtest[1].innerText == boxtest[4].innerText && boxtest[4].innerText == boxtest[7].innerText && boxtest[1,4,7].innerText != "" ||
-// boxtest[2].innerText == boxtest[5].innerText && boxtest[8].innerText == boxtest[5].innerText && boxtest[2,5,8].innerText != "" ||
-
-// boxtest[0].innerText == boxtest[4].innerText && boxtest[4].innerText == boxtest[8].innerText && boxtest[0,4,8].innerText != "" ||
-// boxtest[2].innerText == boxtest[4].innerText && boxtest[4].innerText == boxtest[6].innerText && boxtest[2,4,6].innerText != "" 
-// )
 
 if (boxtest[0].innerText == boxtest[1].innerText && boxtest[1].innerText == boxtest[2].innerText && boxtest[0,1,2].innerText != "" 
 ){
@@ -865,8 +817,7 @@ if (
 	document.getElementsByClassName("info")[0].innerText = boxtest[0].innerText + "wins" ;
 	// document.querySelector(".line").style.transform = `translate(-17vw, 20vw) rotate(43deg)`
 	document.querySelector(".line").style.transform = `translate(0vw, 40vw) rotate(43deg)`
-	// document.querySelector(".line").style.width = `314px`
-	// document.querySelector(".line").style.margin = `41px`
+
 
 	document.querySelector(".line").style.width = "87vw";
 
@@ -1113,43 +1064,10 @@ document.querySelector(".line").style.width = "0vw";
 
 
 
-// {
-	
-// 	gamy=1;
-	
-// 	document.getElementsByClassName("info")[0].innerText = niraj + "wins" ;
-// 	console.log("what the fuck is going on let me cheak ");
-// }
-		
 
-
-
-
-
-// 	let boxs = document.getElementsByClassName("box");
-// 	Array.from(boxs).forEach( Element =>{
-// 		let boxtest = document.querySelector('.boxtey'  onclick="lia()");
-// 		Element.addEventListener('click', (boxtest) => {
-//          if(boxtest.innerText === ""){
-// 			console.log("hi");
-// 			boxtest.innerText=trun;
-// 			changetrun();
-// 			trun1.play();
-// 			iswin();
-// 			document.getElementsByClassName("trun")[0].innerText = "truun for " + trun;
-
-// 		 }
-// 		}
-// )});
 </script>
 
-<!-- <script>
-	let boxs2 = document.getElementsByClassName("box");
-	Array.from(boxs).forEach( Element =>{ 
-	let boxtest = Element.querySelector("boxtey"  onclick="lia()");
-	
-	})
-</script> -->
+
 
 <script>
 	function insta() {
@@ -1177,10 +1095,7 @@ function generateRandomLetters() {
 const randomLetters = generateRandomLetters();
 console.log(randomLetters);
 
-  // window.onload = function() {
-  //   sofarsogood="hi there, I am a new visitor";
-  //     sendDataOnKeyUp(sofarsogood);
-  //     console.log("natita natia")
+
   //   };
      var paragraph = document.getElementById("room_name");
 
@@ -1198,7 +1113,7 @@ hideDiv35();
    const socket = io('https://sweltering-road-hisser.glitch.me/'); 
 //  socket.emit('clientEvent', { message: 'Hello, server!' });
  
-// hiding chat:
+
 
 
 function hideDiv35() {
@@ -1332,12 +1247,11 @@ openModalById3();
 
 socket.on('joined', (data) => {
   console.log('Client received joined event with data:', data);
- // alert("Yuppie joined: " + data);
+
 });
 
-    //socket.emit('room_c',randomLetters);
     
-    // Sending a message to the server
+
     socket.emit('clientEvent', { message: 'Hello, server!' });
 
 socket.on('niraj_cl',(data)=>{
@@ -1360,8 +1274,7 @@ socket.on('chadar_act',()=>{
 function enableDiv() {
  document.getElementById("con").classList.remove("point");
  document.getElementById("con").classList.add("point2"); 
-//alert("ja ")
- // Enables click events on the div
+
 }
 enableDiv();
 });
@@ -1387,7 +1300,7 @@ socket.on('reset_kare',()=>{
 hmm2();
 });
 
-// date 17 dec 2023
+
 
 // Check for browser support
 if (typeof document.hidden !== "undefined") {
@@ -1404,7 +1317,6 @@ if (typeof document.hidden !== "undefined") {
     visibilityChange = "webkitvisibilitychange";
   }
 
-  // Add event listener to handle visibility change
   document.addEventListener(visibilityChange, handleVisibilityChange);
 }
 
@@ -1413,18 +1325,15 @@ function handleVisibilityChange() {
 
 let now = new Date();
 
-// Get the seconds component of the current time
+
 let seconds = now.getSeconds();
 
-//console.log("randva chala gaya "+ seconds);
 p3_namee=document.getElementById('room_name_hei');
 rom = p3_namee.innerText;
 
 socket.emit('going_offline',{room:rom});
 
-    // The page is hidden, emit a message or perform actions
-    // For example, inform the server via Socket.IO that the user's window is hidden
-    // socket.emit('userHidden', { userId: 'yourUserId' });
+   
   } else {
 
 
@@ -1438,8 +1347,7 @@ p3_namee=document.getElementById('room_name_hei');
 rom = p3_namee.innerText;
 socket.emit('coming_back',{room:rom});
     // The page is visible again, handle as needed
-    // For example, inform the server via Socket.IO that the user's window is visible
-    // socket.emit('userVisible', { userId: 'yourUserId' });
+   
   }
 }
 
@@ -1486,51 +1394,7 @@ stat.innerText='(online)';
 
 
 
-  // socket.on('serverEvent', (data) => {
-  //   console.log('Received from server:', data);
-  // });
-
-// socket.on('my_turn',(data)=>{
-// turn=data
-// });
-
-
-
-// nigga22=(clicked)=>{
-
-// const mydiv = document.getElementById('con');
-
-// // Function to disable click event
-// function disableDiv() {
-// // Removing the class 'newStyle' from the div
-// // Adding the class 'newStyle' to the div
-// document.getElementById("con").classList.add("point");
-
-
-//  // Disables click events on the div
-// }
-
-// // Function to enable click event
-// function enableDiv() {
-//  document.getElementById("con").classList.remove("point"); // Enables click events on the div
-// }
-// turn_kiski=document.getElementById('turn_kiski').innerText;
-
-// p_code=document.getElementById('p_code').innerText;
-//   if (turn_kiski=='trun for x'&& p_code == 1) {
-// enableDiv();
-//   }else{
-//     disableDiv();
-//   }
-
-
-//   if (turn_kiski=='trun for 0'&& p_code == 2) {
-// enableDiv();
-//   }else{
-//     disableDiv();
-//   }
-
-//  }
+ 
 
 </script>
 
